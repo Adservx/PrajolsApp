@@ -1,0 +1,9 @@
+# EAS ignore file
+# Files/directories to exclude from EAS builds
+
+node_modules/
+.git/
+.expo/
+.vscode/
+*.log
+.DS_Store
