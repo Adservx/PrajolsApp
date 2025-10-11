@@ -1,26 +1,51 @@
 # Assets Directory
 
-This directory contains application assets like icons and splash screens.
+This directory is for application assets like icons and splash screens.
 
-## Required Assets
+## Current Status
 
-The following assets are required for the app:
+The app is currently using **Expo's default assets** to avoid build errors. This allows the app to build successfully immediately.
 
-- **icon.png**: App icon (1024x1024px recommended)
+## Adding Custom Assets (Optional)
+
+When you're ready to add custom assets:
+
+### Step 1: Create Your Assets
+
+Create these files with proper dimensions:
+
+- **icon.png**: App icon (1024x1024px)
 - **adaptive-icon.png**: Android adaptive icon (1024x1024px)
-- **splash.png**: Splash screen image (1284x2778px recommended)
+- **splash.png**: Splash screen image (1284x2778px)
 - **favicon.png**: Web favicon (48x48px or larger)
 
-## Generating Assets
+### Step 2: Update app.json
 
-You can generate these assets automatically using Expo:
+Add these properties to the `expo` section in `app.json`:
 
-1. Create a single high-resolution icon (1024x1024px)
-2. Save it as `icon.png` in this directory
-3. Run: `npx expo prebuild` to generate all required variants
+```json
+"icon": "./assets/icon.png",
+"splash": {
+  "image": "./assets/splash.png",
+  "resizeMode": "contain",
+  "backgroundColor": "#ffffff"
+},
+"android": {
+  "adaptiveIcon": {
+    "foregroundImage": "./assets/adaptive-icon.png",
+    "backgroundColor": "#ffffff"
+  },
+  "package": "com.prajols.app"
+},
+"web": {
+  "favicon": "./assets/favicon.png"
+}
+```
 
-Or use an online tool like:
+### Tools for Generating Assets
+
 - https://www.appicon.co/
 - https://easyappicon.com/
+- https://expo.dev/tools (Expo app icon generator)
 
-For now, placeholder files have been created. The app will use default Expo assets until you replace these with your own images.
+**Note**: Empty or invalid image files will cause build failures, so only add assets when you have proper image files ready.
