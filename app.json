@@ -5,12 +5,19 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.prajols.app"
     },
     "android": {
-      "package": "com.prajols.app"
+      "package": "com.prajols.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#ffffff"
+      }
     },
     "extra": {
       "eas": {
