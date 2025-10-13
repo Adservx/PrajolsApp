@@ -1,28 +1,82 @@
 {
   "expo": {
-    "name": "PrajolsApp",
+    "name": "School Management System",
     "slug": "prajolsapp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
+    "scheme": "prajolsapp",
     "splash": {
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#4F46E5"
     },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.prajols.app"
+      "bundleIdentifier": "com.prajols.sms",
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app uses the camera to scan QR codes for attendance.",
+        "NSPhotoLibraryUsageDescription": "This app needs access to your photo library to upload documents.",
+        "NSMicrophoneUsageDescription": "This app uses the microphone for video calls."
+      }
     },
     "android": {
-      "package": "com.prajols.app",
+      "package": "com.prajols.sms",
+      "versionCode": 1,
       "adaptiveIcon": {
-        "backgroundColor": "#ffffff"
-      }
+        "backgroundColor": "#4F46E5"
+      },
+      "permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "NOTIFICATIONS",
+        "INTERNET",
+        "ACCESS_NETWORK_STATE"
+      ],
+      "jsEngine": "hermes",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "prajolsapp",
+              "host": "auth"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ]
+    },
+    "web": {},
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "color": "#4F46E5"
+        }
+      ],
+      "expo-barcode-scanner",
+      "expo-secure-store",
+      "expo-local-authentication"
+    ],
+    "notification": {
+      "color": "#4F46E5"
     },
     "extra": {
       "eas": {
         "projectId": "5fffcd77-79ea-4c67-817f-6d90af6967e1"
-      }
+      },
+      "googleWebClientId": "516581419359-vtgkrea0fh5beg2m5b108efk4s9b6bhs.apps.googleusercontent.com"
     }
   }
 }
