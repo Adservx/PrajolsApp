@@ -1,0 +1,171 @@
+workflows:
+  # Android Build Workflow
+  android-workflow:
+    name: Android Build
+    max_build_duration: 60
+    instance_type: mac_mini_m1
+    environment:
+      android_signing:
+        - school_management_keystore
+      groups:
+        - google_play # Add your Google Play credentials group
+      vars:
+        PACKAGE_NAME: "com.schoolmanagement.app"
+      node: 18.19.0
+    cache:
+      cache_paths:
+        - $HOME/.gradle/caches
+        - $HOME/Library/Caches/CocoaPods
+        - $CM_BUILD_DIR/node_modules
+    triggering:
+      events:
+        - push
+        - tag
+        - pull_request
+      branch_patterns:
+        - pattern: 'main'
+          include: true
+          source: true
+        - pattern: 'develop'
+          include: true
+          source: true
+    scripts:
+      - name: Install dependencies
+        script: |
+          npm install
+      - name: Install Expo CLI
+        script: |
+          npm install -g expo-cli eas-cli
+      - name: Run type check
+        script: |
+          npm run type-check
+      - name: Run linter
+        script: |
+          npm run lint
+      - name: Set up environment variables
+        script: |
+          echo "EXPO_PUBLIC_SUPABASE_URL=$EXPO_PUBLIC_SUPABASE_URL" >> .env
+          echo "EXPO_PUBLIC_SUPABASE_ANON_KEY=$EXPO_PUBLIC_SUPABASE_ANON_KEY" >> .env
+      - name: Build Android APK
+        script: |
+          npx expo export:android
+      - name: Build Android App Bundle (AAB)
+        script: |
+          eas build --platform android --profile production --non-interactive
+    artifacts:
+      - build/**/outputs/**/*.apk
+      - build/**/outputs/**/*.aab
+      - build/**/outputs/**/mapping.txt
+    publishing:
+      email:
+        recipients:
+          - imserv67@gmail.com
+        notify:
+          success: true
+          failure: true
+
+  # iOS Build Workflow
+  ios-workflow:
+    name: iOS Build
+    max_build_duration: 60
+    instance_type: mac_mini_m1
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.schoolmanagement.app
+      groups:
+        - app_store_connect # Add your App Store Connect credentials
+      vars:
+        BUNDLE_ID: "com.schoolmanagement.app"
+        XCODE_WORKSPACE: "ios/SchoolManagement.xcworkspace"
+        XCODE_SCHEME: "SchoolManagement"
+      node: 18.19.0
+      xcode: 15.0
+      cocoapods: default
+    cache:
+      cache_paths:
+        - $HOME/Library/Caches/CocoaPods
+        - $CM_BUILD_DIR/node_modules
+    triggering:
+      events:
+        - push
+        - tag
+      branch_patterns:
+        - pattern: 'main'
+          include: true
+          source: true
+    scripts:
+      - name: Install dependencies
+        script: |
+          npm install
+      - name: Install Expo CLI
+        script: |
+          npm install -g expo-cli eas-cli
+      - name: Run type check
+        script: |
+          npm run type-check
+      - name: Set up environment variables
+        script: |
+          echo "EXPO_PUBLIC_SUPABASE_URL=$EXPO_PUBLIC_SUPABASE_URL" >> .env
+          echo "EXPO_PUBLIC_SUPABASE_ANON_KEY=$EXPO_PUBLIC_SUPABASE_ANON_KEY" >> .env
+      - name: Install CocoaPods dependencies
+        script: |
+          cd ios && pod install
+      - name: Build iOS IPA
+        script: |
+          eas build --platform ios --profile production --non-interactive
+    artifacts:
+      - build/ios/**/*.ipa
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
+    publishing:
+      email:
+        recipients:
+          - imserv67@gmail.com
+        notify:
+          success: true
+          failure: true
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+
+  # Development/Test Workflow
+  dev-workflow:
+    name: Development Build
+    max_build_duration: 30
+    instance_type: mac_mini_m1
+    environment:
+      node: 18.19.0
+    cache:
+      cache_paths:
+        - $CM_BUILD_DIR/node_modules
+    triggering:
+      events:
+        - push
+        - pull_request
+      branch_patterns:
+        - pattern: '*'
+          include: true
+          source: true
+    scripts:
+      - name: Install dependencies
+        script: |
+          npm install
+      - name: Run type check
+        script: |
+          npm run type-check
+      - name: Run linter
+        script: |
+          npm run lint
+      - name: Run tests (if available)
+        script: |
+          # Add your test command here when you have tests
+          # npm test
+          echo "No tests configured yet"
+    publishing:
+      email:
+        recipients:
+          - imserv67@gmail.com
+        notify:
+          success: false
+          failure: true
