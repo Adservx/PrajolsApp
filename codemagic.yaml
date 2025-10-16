@@ -5,10 +5,11 @@ workflows:
     max_build_duration: 60
     instance_type: mac_mini_m1
     environment:
-      android_signing:
-        - school_management_keystore
+      # Uncomment after uploading keystore to Codemagic
+      # android_signing:
+      #   - school_management_keystore
       groups:
-        - google_play # Add your Google Play credentials group
+        # - google_play # Add your Google Play credentials group when ready
       vars:
         PACKAGE_NAME: "com.schoolmanagement.app"
       node: 18.19.0
@@ -70,11 +71,12 @@ workflows:
     max_build_duration: 60
     instance_type: mac_mini_m1
     environment:
-      ios_signing:
-        distribution_type: app_store
-        bundle_identifier: com.schoolmanagement.app
+      # Uncomment after setting up iOS code signing in Codemagic
+      # ios_signing:
+      #   distribution_type: app_store
+      #   bundle_identifier: com.schoolmanagement.app
       groups:
-        - app_store_connect # Add your App Store Connect credentials
+        # - app_store_connect # Add your App Store Connect credentials when ready
       vars:
         BUNDLE_ID: "com.schoolmanagement.app"
         XCODE_WORKSPACE: "ios/SchoolManagement.xcworkspace"

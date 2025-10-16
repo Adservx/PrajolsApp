@@ -28,9 +28,11 @@ git push
 - `EXPO_PUBLIC_SUPABASE_URL`: Your Supabase project URL
 - `EXPO_PUBLIC_SUPABASE_ANON_KEY`: Your Supabase anonymous key
 
-## Step 3: Set Up Code Signing (For Production Builds)
+## Step 3: Set Up Code Signing (Optional - For Production Builds)
 
-### For Android:
+**Note:** Code signing is NOT required for initial testing. You can skip this step and come back later when you're ready to publish to app stores.
+
+### For Android (when ready for production):
 1. Generate a keystore file if you don't have one:
    ```bash
    keytool -genkey -v -keystore school-management.keystore -alias school-management -keyalg RSA -keysize 2048 -validity 10000
@@ -40,12 +42,23 @@ git push
    - Upload your keystore file
    - Enter keystore password, key alias, and key password
    - Name it `school_management_keystore`
+3. Uncomment these lines in `codemagic.yaml`:
+   ```yaml
+   android_signing:
+     - school_management_keystore
+   ```
 
-### For iOS:
+### For iOS (when ready for production):
 1. In Codemagic:
    - Go to **Code signing identities** → **iOS**
    - Connect your Apple Developer account
    - Select your provisioning profile and certificate
+2. Uncomment these lines in `codemagic.yaml`:
+   ```yaml
+   ios_signing:
+     distribution_type: app_store
+     bundle_identifier: com.schoolmanagement.app
+   ```
 
 ## Step 4: Set Up EAS (Expo Application Services)
 
