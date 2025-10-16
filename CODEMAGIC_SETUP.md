@@ -153,10 +153,24 @@ publishing:
 - Verify keystore credentials are correct
 - Check package name matches
 
+## Enabling App Store Connect Integration (Optional)
+
+To automatically submit builds to TestFlight:
+
+1. In Codemagic, go to **Teams** → **Integrations**
+2. Click **Add integration** → **App Store Connect**
+3. Follow the setup wizard to connect your Apple Developer account
+4. Once configured, uncomment these lines in `codemagic.yaml`:
+   ```yaml
+   app_store_connect:
+     auth: integration
+     submit_to_testflight: true
+   ```
+
 ## Next Steps
 
 1. Set up automatic deployment to Google Play Store (Android)
-2. Set up automatic deployment to App Store (iOS)
+2. Set up automatic deployment to App Store (iOS) - see above
 3. Add automated testing
 4. Configure Slack/Discord notifications
 

@@ -125,9 +125,10 @@ workflows:
         notify:
           success: true
           failure: true
-      app_store_connect:
-        auth: integration
-        submit_to_testflight: true
+      # Uncomment and configure when you set up App Store Connect integration
+      # app_store_connect:
+      #   auth: integration
+      #   submit_to_testflight: true
 
   # Development/Test Workflow
   dev-workflow:
